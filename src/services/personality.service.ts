@@ -39,38 +39,86 @@ const getTraits = async (): Promise<TraitsResponse> => {
   return res.data
 }
 
+// const getPersonalityTest = async (): Promise<Array<Question>> => {
+//   const res = await session.get(`${BASE_URL}/free-personality-test`)
+//   const regex = new RegExp(/:questions="(\[.*?\])"/, "gm")
+//   const matches = regex.exec(res.data)
+
+//   if (!matches) throw new Error("No matches found")
+
+//   // console.log(matches[2])
+//   const unparsedQuestions = matches[1]
+
+//   const replacedQuestions = Object.entries(replaceMap).reduce(
+//     (acc, [key, value]) => acc.replaceAll(key, value),
+//     unparsedQuestions
+//   )
+//   const questions = JSON.parse(replacedQuestions)
+
+//   const defaultOptions: QuestionOption[] = [
+//     { text: "Disagree strongly", value: -3 },
+//     { text: "Disagree moderately", value: -2 },
+//     { text: "Disagree a little", value: -1 },
+//     { text: "Neither agree nor disagree", value: 0 },
+//     { text: "Agree a little", value: 1 },
+//     { text: "Agree moderately", value: 2 },
+//     { text: "Agree strongly", value: 3 },
+//   ]
+
+//   return questions.map((question: any) => ({
+//     id: Buffer.from(question.text).toString("base64url"),
+//     text: question.text,
+//     options: defaultOptions,
+//   }))
+// }
+
 const getPersonalityTest = async (): Promise<Array<Question>> => {
-  const res = await session.get(`${BASE_URL}/free-personality-test`)
-  const regex = new RegExp(/:questions="(\[.*?\])"/, "gm")
-  const matches = regex.exec(res.data)
+  try {
+    console.log("Fetching questions from:", `${BASE_URL}/free-personality-test`);
+    const res = await session.get(`${BASE_URL}/free-personality-test`);
+    console.log("Response data received:", res.data);
 
-  if (!matches) throw new Error("No matches found")
+    const regex = new RegExp(/:questions="(\[.*?\])"/, "gm");
+    const matches = regex.exec(res.data);
+    console.log("Regex matches:", matches);
 
-  // console.log(matches[2])
-  const unparsedQuestions = matches[1]
+    if (!matches) throw new Error("No matches found");
 
-  const replacedQuestions = Object.entries(replaceMap).reduce(
-    (acc, [key, value]) => acc.replaceAll(key, value),
-    unparsedQuestions
-  )
-  const questions = JSON.parse(replacedQuestions)
+    const unparsedQuestions = matches[1];
+    const replacedQuestions = Object.entries(replaceMap).reduce(
+      (acc, [key, value]) => acc.replaceAll(key, value),
+      unparsedQuestions
+    );
+    const questions = JSON.parse(replacedQuestions);
 
-  const defaultOptions: QuestionOption[] = [
-    { text: "Disagree strongly", value: -3 },
-    { text: "Disagree moderately", value: -2 },
-    { text: "Disagree a little", value: -1 },
-    { text: "Neither agree nor disagree", value: 0 },
-    { text: "Agree a little", value: 1 },
-    { text: "Agree moderately", value: 2 },
-    { text: "Agree strongly", value: 3 },
-  ]
+    console.log("Parsed questions:", questions);
 
-  return questions.map((question: any) => ({
-    id: Buffer.from(question.text).toString("base64url"),
-    text: question.text,
-    options: defaultOptions,
-  }))
-}
+    const defaultOptions: QuestionOption[] = [
+      { text: "Disagree strongly", value: -3 },
+      { text: "Disagree moderately", value: -2 },
+      { text: "Disagree a little", value: -1 },
+      { text: "Neither agree nor disagree", value: 0 },
+      { text: "Agree a little", value: 1 },
+      { text: "Agree moderately", value: 2 },
+      { text: "Agree strongly", value: 3 },
+    ];
+
+    return questions.map((question: any) => ({
+      id: Buffer.from(question.text).toString("base64url"),
+      text: question.text,
+      options: defaultOptions,
+    }));
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error("Error in getPersonalityTest:", error.message);
+    } else {
+      console.error("Unknown error in getPersonalityTest:", error);
+    }
+    throw error;
+  }
+  
+};
+
 
 const getTestResults = async (
   submissionData: Submission[],
