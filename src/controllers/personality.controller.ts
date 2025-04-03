@@ -10,9 +10,11 @@ const getQuestions = async (req: Request, res: Response) => {
 }
 
 const submit = async (
+  
   req: Request<any, any, z.infer<typeof testValidator.submission>>,
   res: Response
 ) => {
+  console.log("Incoming body:", JSON.stringify(req.body, null, 2));
   const { answers, gender } = req.body
   const result = await personalityService.getTestResults(
     answers as Submission[],
