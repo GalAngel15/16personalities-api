@@ -1,4 +1,4 @@
-export const BASE_URL = "https://www.16personalities.com"
+export const BASE_URL = "https://www.16personalities.com";
 
 const routeConfig = {
   "api.user": "/api/user",
@@ -447,8 +447,8 @@ const routeConfig = {
   "uz/personality-test": "/uz/bepul-shaxsiyat-testi",
   "vi/personality-test": "/vi/bài-kiểm-tra-tính-cách",
   "webhooks.paypal.ipn": "/orders/paypal/ipn",
-}
+};
 
-export const routes: typeof routeConfig = routeConfig
+export const routes: typeof routeConfig = routeConfig;
 
-export const PORT = 3000
+export const PORT = 3000;
