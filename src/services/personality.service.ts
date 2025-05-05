@@ -93,7 +93,27 @@ const getTestResults = async (
     const variant = profileMatch?.[2] === "a" ? "Assertive" : "Turbulent";
 
     const traitsData = await getTraits();
-
+    const personalityNamesMap: { [key: string]: string } = {
+      ISTP: 'virtuoso',
+      ENFJ: 'protagonist',
+      INFJ: 'advocate',
+      INFP: 'mediator',
+      ENFP: 'campaigner',
+      ENTJ: 'commander',
+      ENTP: 'debater',
+      INTJ: 'architect',
+      INTP: 'logician',
+      ISFJ: 'defender',
+      ISFP: 'adventurer',
+      ESFJ: 'consul',
+      ESFP: 'entertainer',
+      ESTJ: 'executive',
+      ESTP: 'entrepreneur'
+    };
+    
+  
+    const baseType = personalityType.split('-')[0]; // לדוגמה ISTP
+    const englishName = personalityNamesMap[baseType]; // לדוגמה virtuoso
     return {
       niceName: personalityType,
       fullCode: `${personalityType}-${variant.charAt(0).toUpperCase()}`,
@@ -105,7 +125,7 @@ const getTestResults = async (
       scales: traitsData.traits ? traitsData.traits.map(t => t.label) : [],
       avatarSrc: `https://www.16personalities.com/static/animations/avatars/all/${personalityType.toLowerCase()}-${gender.toLowerCase()}.json`,
       avatarAlt: `${personalityType} avatar`,
-      avatarSrcStatic: `https://www.16personalities.com/static/images/personality-types/avatars/${personalityType.toLowerCase()}-${gender.toLowerCase()}.svg`,
+      avatarSrcStatic: `https://www.16personalities.com/static/images/personality-types/avatars/${baseType.toLowerCase()}-${englishName}-${gender.toLowerCase()}.svg?v=3`,
       traits: traitsData.traits || [],
       profileUrl: redirectUrl || "", // או להשאיר ריק אם אין redirect
     };
