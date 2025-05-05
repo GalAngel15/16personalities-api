@@ -22,11 +22,13 @@ export enum Gender {
 
 export interface TestResult {
   niceName: string;
+  fullCode: string;
   personality: string;
   variant: string;
   role: string;
   strategy: string;
-
+  snippet: string;
+  scales: string[];
   avatarSrc: string;
   avatarAlt: string;
   avatarSrcStatic: string;

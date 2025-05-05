@@ -94,3 +94,4 @@ export interface Personality {
   title: string
   subtitleHtml: string
 }
+

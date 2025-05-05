@@ -95,17 +95,21 @@ const getTestResults = async (
     const traitsData = await getTraits();
 
     return {
-      avatarAlt: "",
-      avatarSrc: "",
-      avatarSrcStatic: "",
-      personality: personalityType,
-      variant,
       niceName: personalityType,
-      profileUrl: redirectUrl,
-      traits: traitsData.traits,
-      role: "",
-      strategy: "",
+      fullCode: `${personalityType}-${variant.charAt(0).toUpperCase()}`,
+      personality: personalityType,
+      variant: variant,
+      role: "", // בינתיים ריק כי אין מידע מהשרת
+      strategy: "", // בינתיים ריק כי אין מידע מהשרת
+      snippet: traitsData.description || "No description available.",
+      scales: traitsData.traits ? traitsData.traits.map(t => t.label) : [],
+      avatarSrc: `https://www.16personalities.com/static/animations/avatars/all/${personalityType.toLowerCase()}-${gender.toLowerCase()}.json`,
+      avatarAlt: `${personalityType} avatar`,
+      avatarSrcStatic: `https://www.16personalities.com/static/images/personality-types/avatars/${personalityType.toLowerCase()}-${gender.toLowerCase()}.svg`,
+      traits: traitsData.traits || [],
+      profileUrl: redirectUrl || "", // או להשאיר ריק אם אין redirect
     };
+    
   } catch (err) {
     console.error("🔥 ERROR in getTestResults:", err);
     throw new HttpError(500, "Failed to get test results");
