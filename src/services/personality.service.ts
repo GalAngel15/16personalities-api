@@ -108,7 +108,8 @@ const getTestResults = async (
       ESFJ: 'consul',
       ESFP: 'entertainer',
       ESTJ: 'executive',
-      ESTP: 'entrepreneur'
+      ESTP: 'entrepreneur',
+      ISTJ: 'Logistician'
     };
     
   
